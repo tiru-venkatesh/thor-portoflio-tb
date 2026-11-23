@@ -274,7 +274,7 @@ const revealObserver = new IntersectionObserver((entries) => {
     revealObserver.unobserve(entry.target);
   }
 }, { threshold: 0.2 });
-$$(".reveal").forEach((el) => revealObserver.observe(el));
+$$(".reveal, .fly").forEach((el) => revealObserver.observe(el));
 
 /* ---------- Highlight the current section in the menu ---------- */
 const menuLinks = $$(".menu a");

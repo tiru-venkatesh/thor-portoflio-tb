@@ -80,7 +80,7 @@ h3 { font-size: 1.9rem; line-height: 1.05; }
 .hero[data-storm="red"] { --storm: var(--red); }
 
 .hero-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; opacity: 0; will-change: transform, opacity;
-  transform: translate3d(calc(var(--mx) * -14px), calc(var(--my) * -10px + var(--sy) * 70px), 0) scale(1.1);
+  transform: translate3d(calc(var(--mx) * -14px), calc(var(--my) * -10px + var(--sy) * 70px), 0) scale(1.02);
   transition: opacity 1.4s ease, transform .25s ease-out; }
 .hero-video.active { opacity: 1; }
 .hero-shade { position: absolute; inset: 0; z-index: -1;
@@ -397,3 +397,31 @@ body.has-cursor .hammer { cursor: none; }
   .hero-video { transform: scale(1.02); }
   .loader { display: none; }
 }
+
+/* ---------- Motion-graphic dividers: hammer / Stormbreaker thrown between sections ---------- */
+.fly { position: relative; z-index: 1; height: clamp(160px, 22vw, 250px); overflow: hidden; pointer-events: none; }
+.fly-art { position: absolute; top: 50%; left: 50%; height: 78%; width: auto; opacity: 0; will-change: transform, opacity; }
+.fly-hammer .fly-art { --glow: 47 155 255; }
+.fly-axe .fly-art { --glow: 255 45 70; height: 92%; }
+.fly-streak { position: absolute; top: 50%; left: 0; width: 100%; height: 2px; opacity: 0; transform: scaleX(0); transform-origin: left center;
+  background: linear-gradient(90deg, transparent, rgb(47 155 255 / .9) 50%, #fff 52%, transparent); box-shadow: 0 0 18px rgb(47 155 255 / .8); }
+.fly-axe .fly-streak { transform-origin: right center; background: linear-gradient(270deg, transparent, rgb(255 45 70 / .9) 50%, #fff 52%, transparent); box-shadow: 0 0 18px rgb(255 45 70 / .8); }
+.fly-ring { position: absolute; top: 50%; left: 50%; width: 60px; height: 60px; margin: -30px 0 0 -30px; border-radius: 50%; opacity: 0;
+  border: 2px solid rgb(120 190 255 / .9); box-shadow: 0 0 30px rgb(47 155 255 / .8), inset 0 0 20px rgb(47 155 255 / .5); }
+.fly-axe .fly-ring { border-color: rgb(255 110 125 / .9); box-shadow: 0 0 30px rgb(255 45 70 / .8), inset 0 0 20px rgb(255 45 70 / .5); }
+
+.fly.in .fly-hammer-anim, .fly-hammer.in .fly-art { animation: throw-l 1.1s cubic-bezier(.2,.8,.2,1) both, glow 2.4s ease-in-out 1.2s infinite alternate; }
+.fly-axe.in .fly-art { animation: throw-r 1.1s cubic-bezier(.2,.8,.2,1) both, glow 2.4s ease-in-out 1.2s infinite alternate; }
+.fly.in .fly-streak { animation: streak 1s ease-out both; }
+.fly.in .fly-ring { animation: ring .9s ease-out .95s both; }
+
+@keyframes throw-l { 0% { opacity: 0; transform: translate(calc(-50% - 70vw), -50%) rotate(-900deg) scale(.7); }
+  12% { opacity: 1; } 100% { opacity: 1; transform: translate(-50%, -50%) rotate(0) scale(1); } }
+@keyframes throw-r { 0% { opacity: 0; transform: translate(calc(-50% + 70vw), -50%) rotate(720deg) scale(.7); }
+  12% { opacity: 1; } 100% { opacity: 1; transform: translate(-50%, -50%) rotate(0) scale(1); } }
+@keyframes streak { 0% { opacity: 0; transform: scaleX(0); } 30% { opacity: 1; } 70% { opacity: 1; transform: scaleX(1); } 100% { opacity: 0; transform: scaleX(1); } }
+@keyframes ring { 0% { opacity: .95; transform: scale(.6); } 100% { opacity: 0; transform: scale(7); } }
+@keyframes glow { from { filter: drop-shadow(0 0 14px rgb(var(--glow) / .5)); } to { filter: drop-shadow(0 0 40px rgb(var(--glow) / .95)); } }
+
+@media (prefers-reduced-motion: reduce) { .fly-art { opacity: 1 !important; animation: none !important; transform: translate(-50%, -50%) !important; } .fly-streak, .fly-ring { display: none; } }
+@media (max-width: 800px) { .fly { height: 150px; } }
